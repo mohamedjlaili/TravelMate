@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/HomePage.dart';
+import 'package:flutter_app/NavBar.dart';
 import 'package:flutter_app/Toast.dart';
 import 'package:flutter_app/formContainer.dart';
 import 'Register.dart';
@@ -53,6 +54,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 20),
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: FormContainerWidget(
@@ -65,7 +67,12 @@ class _LoginPageState extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: GestureDetector(
-                onTap: _signIn,
+               onTap: () {
+                   _signIn();
+                  Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()));
+                  },
+
+
                 child: Container(
                   width: double.infinity,
                   height: 55,
@@ -73,6 +80,8 @@ class _LoginPageState extends State<LoginPage> {
                     color: const Color.fromARGB(255, 0, 41, 245),
                     borderRadius: BorderRadius.circular(20),
                   ),
+                    
+          
                   child: const Center(
                     child: Text(
                       "Login",
@@ -122,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if (email.isEmpty || password.isEmpty) {
       showToast(message: "Veuillez remplir tous les champs.");
-      return;
+      return null ;
     }
 
     // TODO: Implement authentication logic

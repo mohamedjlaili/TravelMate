@@ -111,7 +111,10 @@ class _SignUpPageState extends State<SignUpPage> {
           Padding(
               padding: const EdgeInsets.all(15.0),
             child:  GestureDetector(
-              onTap: _signUp,
+              onTap: () {_signUp(); 
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>LoginPage()));
+
+              },
               child: Container(
                 width: double.infinity,
                 height: 55,

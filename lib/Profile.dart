@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/EditProfile.dart';
+import 'package:flutter_app/NavBar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +25,12 @@ class MyAccountScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: TextButton(
-          onPressed: () {},
+           onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>MainPage()));
+
+
+          },
+          
           child: const Text(
             "Back",
             style: TextStyle(color: Color.fromARGB(255, 0, 41, 245)),
@@ -74,9 +81,15 @@ class MyAccountScreen extends StatelessWidget {
             const SizedBox(height: 16),
             // Edit Profile Button
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+
+               Navigator.push(context, MaterialPageRoute(builder: (context) =>EditProfilePage()));
+
+              },
               icon: const Icon(Icons.edit, color: Colors.white),
-              label: const Text("edit profile" , style :TextStyle(color:Color.fromARGB(255, 255, 255, 255) , fontWeight: FontWeight.bold )),
+              label: const Text("edit profile" , style :TextStyle(color:Color.fromARGB(255, 255, 255, 255) , 
+              fontWeight: FontWeight.bold  , 
+              fontSize: 20 )),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 0, 13, 255),
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

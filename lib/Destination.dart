@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
-
-
-
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DetailScreen(),
-    );
-  }
-}
+import 'package:flutter_app/NavBar.dart';
 
 class DetailScreen extends StatelessWidget {
   @override
@@ -20,14 +7,16 @@ class DetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+          },
           child: const Text(
             "Back",
             style: TextStyle(color: Colors.blue),
           ),
         ),
         title: const Text(
-          "Uluwatu, Bali",
+          "Tailand , Bali",
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -51,7 +40,8 @@ class DetailScreen extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.asset("assets/tailand.jpg",
+                  child: Image.asset(
+                    "assets/tailand.jpg",
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.cover,
@@ -66,18 +56,10 @@ class DetailScreen extends StatelessWidget {
                       bottomRight: Radius.circular(16),
                     ),
                   ),
-                  child: const Text(
-                    "Barong",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                 ),
               ],
             ),
-            const SizedBox(height:14),
+            const SizedBox(height: 14),
             // Stats Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -141,7 +123,7 @@ class DetailScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                       const SizedBox(height: 4),
-                      const Text("it was a wonderful jerney and the food is delicous."),
+                      const Text("it was a wonderful journey and the food is delicious."),
                       TextButton(
                         onPressed: () {},
                         child: const Text(
@@ -177,7 +159,7 @@ class DetailScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                       const SizedBox(height: 4),
-                      const Text("this experience is so wanderful , the hotel is nice and the pool is clean."),
+                      const Text("this experience is so wonderful, the hotel is nice and the pool is clean."),
                       TextButton(
                         onPressed: () {},
                         child: const Text(
@@ -195,30 +177,56 @@ class DetailScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Write a comment",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                minimumSize: const Size(double.infinity, 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () {
+                // Add booking logic here
+              },
+              child: const Text(
+                "Book Now",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(width: 8),
-            CircleAvatar(
-              backgroundColor: Colors.blue,
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.send, color: Colors.white),
-              ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: "Write a comment",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      contentPadding:
+                          const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                CircleAvatar(
+                  backgroundColor: Colors.blue,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.send, color: Colors.white),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

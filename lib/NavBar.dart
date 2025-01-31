@@ -23,7 +23,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     _pages = [
-      const HomePage(),
+      HomePage(),
        DetailScreen(),
        MyAccountScreen()
     ];
@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
         animationDuration: const Duration(milliseconds: 300),
         items: const [
           Icon(Icons.home),
-          Icon(Icons.calendar_month),
+          Icon(Icons.place),
           Icon(Icons.person)
         ],
         onTap: (index) {
