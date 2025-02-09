@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app/HomePage.dart'; // Or your MainPage if that's what you're using.
 import 'package:flutter_app/NavBar.dart';
 import 'package:flutter_app/Toast.dart';
 import 'package:flutter_app/formContainer.dart';
-import 'Register.dart';
+import 'Register.dart'; // This should contain your SignUpPage widget.
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,9 +14,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  // Controllers for the email and password fields.
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Dispose of the controllers when the widget is removed.
   @override
   void dispose() {
     _emailController.dispose();
@@ -23,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  // Build the login page UI.
   @override
   Widget build(BuildContext context) {
     double toul = MediaQuery.of(context).size.height;
@@ -33,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Top image with rounded bottom corners.
             ClipRRect(
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(40),
@@ -45,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 20),
+            // Email input field.
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: FormContainerWidget(
@@ -54,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 20),
-
+            // Password input field.
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: FormContainerWidget(
@@ -64,15 +70,11 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 10),
+            // Login button.
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: GestureDetector(
-               onTap: () {
-                   _signIn();
-                  Navigator.push( context, MaterialPageRoute(builder: (context) => MainPage()));
-                  },
-
-
+                onTap: _signIn,
                 child: Container(
                   width: double.infinity,
                   height: 55,
@@ -80,8 +82,6 @@ class _LoginPageState extends State<LoginPage> {
                     color: const Color.fromARGB(255, 0, 41, 245),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                    
-          
                   child: const Center(
                     child: Text(
                       "Login",
@@ -96,6 +96,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
             const SizedBox(height: 15),
+            // Navigation to the Sign Up page.
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -105,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                      MaterialPageRoute(builder: (context) => const SignUpPage()),
                     );
                   },
                   child: const Text(
@@ -125,15 +126,34 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // The _signIn method connects to Firebase and attempts to sign in the user.
   void _signIn() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
+    // Check that both fields are filled.
     if (email.isEmpty || password.isEmpty) {
       showToast(message: "Veuillez remplir tous les champs.");
-      return null ;
+      return;
     }
 
-    // TODO: Implement authentication logic
+    try {
+      // Attempt to sign in using Firebase Authentication.
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      // If sign in succeeds, navigate to the main page.
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const MainPage()),
+        (route) => false,
+      );
+    } on FirebaseAuthException catch (e) {
+      // If there is an error from Firebase, display it.
+      showToast(message: e.message ?? "Erreur lors de la connexion.");
+    } catch (e) {
+      // For any other error, display a generic message.
+      showToast(message: "Erreur: ${e.toString()}");
+    }
   }
 }

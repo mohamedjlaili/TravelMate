@@ -24,7 +24,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     _pages = [
       HomePage(),
-       DetailScreen(),
+      DetailScreen(),
        MyAccountScreen()
     ];
     super.initState();
