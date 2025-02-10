@@ -23,10 +23,11 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     _pages = [
-      HomePage(),
-      DetailScreen(),
-       MyAccountScreen()
-    ];
+  HomePage(),
+  DetailScreen(title: '', price: '', imagePath: ''),
+  MyAccountScreen()
+];
+
     super.initState();
   }
 

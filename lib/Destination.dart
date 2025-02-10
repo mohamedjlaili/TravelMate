@@ -1,25 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/NavBar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+class DetailScreen extends StatefulWidget {
+  final String title;
+  final String imagePath;
+  final String price;
+
+  const DetailScreen({
+    super.key,
+    required this.title,
+    required this.imagePath,
+    required this.price,
+  });
+
+  @override
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  final TextEditingController _commentController = TextEditingController();
+
+  Future<void> postComment(String comment) async {
+    if (comment.isEmpty) return;
+
+    try {
+      await FirebaseFirestore.instance.collection('comments').add({
+        'name': FirebaseAuth.instance.currentUser?.displayName ?? "Anonymous",
+        'comment': comment,
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+      _commentController.clear(); // Clear input field after posting
+    } catch (e) {
+      print("Error posting comment: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: TextButton(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.blue),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => MainPage()));
+            Navigator.pop(context);
           },
-          child: const Text(
-            "Back",
-            style: TextStyle(color: Colors.blue),
-          ),
         ),
-        title: const Text(
-          "Thailand , Bali",
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          widget.title, // Set the title dynamically
+          style: const TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         actions: [
@@ -36,147 +65,65 @@ class DetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Main Image with Title
-            Stack(
-              alignment: Alignment.bottomLeft,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    "assets/tailand.jpg",
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(16),
-                      bottomRight: Radius.circular(16),
-                    ),
-                  ),
-                ),
-              ],
+            // Destination Image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                widget.imagePath, // Use dynamic image path
+                width: double.infinity,
+                height: 250,
+                fit: BoxFit.cover,
+              ),
             ),
             const SizedBox(height: 14),
-            // Stats Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: const [
-                    Icon(Icons.remove_red_eye, size: 16, color: Colors.grey),
-                    SizedBox(width: 4),
-                    Text("27K", style: TextStyle(color: Colors.grey)),
-                  ],
-                ),
-                Row(
-                  children: const [
-                    Icon(Icons.star, size: 16, color: Colors.orange),
-                    SizedBox(width: 4),
-                    Text("4.0", style: TextStyle(color: Colors.grey)),
-                  ],
-                ),
-                Row(
-                  children: const [
-                    Icon(Icons.chat_bubble_outline, size: 16, color: Colors.grey),
-                    SizedBox(width: 4),
-                    Text("342", style: TextStyle(color: Colors.grey)),
-                  ],
-                ),
-                Row(
-                  children: const [
-                    Icon(Icons.favorite_border, size: 16, color: Colors.grey),
-                    SizedBox(width: 4),
-                    Text("6473", style: TextStyle(color: Colors.grey)),
-                  ],
-                ),
-              ],
+
+            // Destination Price
+            Text(
+              "Price: ${widget.price}",
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(217, 8, 230, 49),
+              ),
             ),
             const SizedBox(height: 16),
+
             // Comments Section
             const Text(
-              "Comments : ",
+              "Comments:",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            // Comment 1
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage('assets/user1.jpg'),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "anthoni Bugantara",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Text(
-                        "5 hours ago",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 4),
-                      const Text("it was a wonderful journey and the food is delicious."),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Reply",
-                          style: TextStyle(color: Colors.blue, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Comment 2
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage('assets/images/user2.jpg'),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "jude mafiosa",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const Text(
-                        "1 hour ago",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                      const SizedBox(height: 4),
-                      const Text("this experience is so wonderful, the hotel is nice and the pool is clean."),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "Reply",
-                          style: TextStyle(color: Colors.blue, fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+
+            // Fetch and Display Comments from Firestore
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('comments')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                var comments = snapshot.data!.docs;
+                return Column(
+                  children: comments.map((doc) {
+                    var data = doc.data() as Map<String, dynamic>;
+                    return _buildComment(
+                      data['name'] ?? "Anonymous",
+                      "Just now", // Timestamp can be formatted later
+                      data['comment'] ?? "",
+                    );
+                  }).toList(),
+                );
+              },
             ),
           ],
         ),
       ),
+
+      // Book Now Button & Comment Box
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(
@@ -207,6 +154,7 @@ class DetailScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: _commentController,
                     decoration: InputDecoration(
                       hintText: "Write a comment",
                       border: OutlineInputBorder(
@@ -224,7 +172,9 @@ class DetailScreen extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.blue,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      postComment(_commentController.text);
+                    },
                     icon: const Icon(Icons.send, color: Colors.white),
                   ),
                 ),
@@ -235,4 +185,45 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
-} 
+
+  // Helper function to create comments
+  Widget _buildComment(String name, String time, String comment) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage('assets/user_default.jpg'),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  time,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                const SizedBox(height: 4),
+                Text(comment),
+                TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "Reply",
+                    style: TextStyle(color: Colors.blue, fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
