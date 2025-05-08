@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_app/HomePage.dart'; // Or your MainPage if that's what you're using.
+import 'package:flutter_app/HomePage.dart'; 
 import 'package:flutter_app/NavBar.dart';
 import 'package:flutter_app/Toast.dart';
 import 'package:flutter_app/formContainer.dart';
-import 'Register.dart'; // This should contain your SignUpPage widget.
+import 'Register.dart'; 
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -158,3 +158,4 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 }
+  

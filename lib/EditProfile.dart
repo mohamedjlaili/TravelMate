@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Profile.dart'; // This should point to your profile (MyAccountScreen).
+import 'package:flutter_app/Profile.dart'; 
 
 void main() {
   // Ensure Firebase is initialized before running the app.
@@ -65,7 +65,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     final String newEmail = _emailController.text.trim();
 
     if (newName.isEmpty || newEmail.isEmpty) {
-      // Optionally, show an error message (e.g., using a Toast or Snackbar).
       return;
     }
 

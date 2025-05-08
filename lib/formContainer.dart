@@ -57,9 +57,9 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
           hintText: widget.hintText,
           hintStyle: const TextStyle(color: Colors.black45),
           prefixIcon:
-              _getPrefixIcon(), // Appel de la fonction pour obtenir l'icône préfixe
+              _getPrefixIcon(), 
           suffixIcon:
-              _getSuffixIcon(), // Appel de la fonction pour obtenir l'icône suffixe
+              _getSuffixIcon(),
         ),
       ),
     );

@@ -70,7 +70,7 @@ class _DetailScreenState extends State<DetailScreen> {
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
                 widget.imagePath, // Use dynamic image path
-                width: double.infinity,
+                width: double.infinity, 
                 height: 250,
                 fit: BoxFit.cover,
               ),
